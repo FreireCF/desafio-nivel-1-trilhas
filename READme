@@ -1,0 +1,68 @@
+# Desafio Nível 1 PDV Com descontos 
+## O que o código faz
+
+Este programa simula a lógica de um **PDV (Ponto de Venda)** que aplica descontos progressivos nas compras. Para cada compra, o operador informa o valor e a idade do cliente; o sistema aplica um desconto para clientes idosos (65 anos ou mais) e um desconto extra para compras acima de R$ 100,00, exibindo o valor final formatado em reais. O programa aceita várias compras seguidas e, ao ser encerrado, mostra um resumo do dia com a quantidade de compras, o total bruto, o total de descontos e o total final.
+
+## Como ele faz
+
+1. Inicia uma lista vazia (`historico`) para guardar as compras.
+2. Entra em um loop `while True` e pede o **valor da compra**.
+   - Se o valor for `0`, o loop é encerrado com `break`.
+   - Se o valor for negativo, exibe um aviso e usa `continue` para pedir novamente.
+3. Pede a **idade do cliente**.
+   - Se a idade for negativa, exibe um aviso e usa `continue` para reiniciar a compra.
+4. Aplica as regras de desconto:
+   - **Regra 1 — Idade:** se a idade for `>= 65`, aplica 20% de desconto.
+   - **Regra 2 — Valor:** se o valor **já com o desconto de idade** for `> 100`, aplica mais 10% sobre esse valor.
+   - O valor final é arredondado para duas casas decimais com `round()`.
+5. Mostra o valor final no formato `R$ 144.00`.
+6. Guarda a compra (valor original, idade e valor final) em um dicionário e adiciona na lista com `.append()`.
+7. Ao encerrar, percorre a lista com um `for` e calcula:
+   - quantidade de compras registradas;
+   - total bruto (soma dos valores originais);
+   - total de descontos concedidos;
+   - total final (soma dos valores com desconto).
+8. Exibe o resumo no console e (bônus) salva o histórico e o resumo no arquivo `resumo.txt` usando `open(..., "w")` e um `for` na lista.
+
+Exemplo de uso:
+
+```
+=== PDV - Ponto de Venda ===
+Digite 0 no valor da compra para encerrar.
+
+Valor da compra (R$): 200
+Idade do cliente: 65
+Valor final: R$ 144.00
+
+Valor da compra (R$): 0
+
+=== Resumo do dia ===
+Compras registradas: 1
+Total bruto: R$ 200.00
+Total de descontos: R$ 56.00
+Total final: R$ 144.00
+
+Resumo salvo em resumo.txt
+```
+
+## Tabela de exemplos (casos de teste)
+
+| # | Valor (R$) | Idade | Desconto idade | Desconto valor | Valor final esperado |
+|---|-----------:|------:|:--------------:|:--------------:|---------------------:|
+| 1 | 50.00 | 30 | 0% | 0% | R$ 50.00 |
+| 2 | 100.00 | 30 | 0% | 0% | R$ 100.00 |
+| 3 | 80.00 | 65 | 20% | 0% | R$ 64.00 |
+| 4 | 100.00 | 70 | 20% | 0% | R$ 80.00 |
+| 5 | 125.00 | 70 | 20% | 0% | R$ 100.00 |
+| 6 | 200.00 | 30 | 0% | 10% | R$ 180.00 |
+| 7 | 101.00 | 30 | 0% | 10% | R$ 90.90 |
+| 8 | 200.00 | 65 | 20% | 10% | R$ 144.00 |
+| 9 | 1000.00 | 80 | 20% | 10% | R$ 720.00 |
+| 10 | 200.00 | 64 | 0% | 10% | R$ 180.00 |
+
+
+### Casos-limite
+
+- **Caso 5** (125.00, idade 70): 125 × 0.8 = 100.00. Como 100 **não é maior** que 100, os 10% não se aplicam → R$ 100.00.
+- **Caso 10** (200.00, idade 64): 64 anos não dá desconto por idade; só o de valor → R$ 180.00.
+- **Caso 7** (101.00, idade 30): 101 × 0.9 = 90.90 → valor exibido com duas casas decimais.
